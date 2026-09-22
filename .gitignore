@@ -1,3 +1,6 @@
 .sites-runtime/
 *.tar.gz
 *.tar
+
+tmp/
+output/

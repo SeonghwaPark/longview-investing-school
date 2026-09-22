@@ -89,3 +89,5 @@ python -m http.server 5173 --bind 127.0.0.1 --directory dist
 지식 라이브러리에 29개 공개 자료의 한국어 학습 안내, 읽을 구간, 적용 과제, 해석상 한계를 정리했습니다. 분야·키워드 검색과 6주 학습 순서, Markdown 안내서 다운로드를 제공합니다. 원문은 공식 출처에서 열람하며 원문 전체를 복제하거나 실시간으로 수집하지 않습니다. 확인일: 2026-09-22. 콘텐츠는 `dist/reading.js`에 있습니다.
 
 모든 29개 자료에 쉬운 한 줄 설명, 가상 숫자 예제, 관심 종목 적용, 용어 풀이, 확인 질문과 펼쳐 보는 해설을 추가했습니다. `dist/easy-reading.js`에서 관리하며 다운로드 안내서에도 포함됩니다. 가상 예제는 실제 공시·시세와 명확히 구분합니다.
+
+학습 안내서 다운로드는 한글 글꼴이 포함된 PDF로 제공합니다. 재생성: node scripts/export-reading.cjs 실행 후 reportlab이 설치된 Python으로 scripts/build-study-pdf.py를 실행합니다. 최종 배포 파일은 dist/study-guide.pdf입니다.

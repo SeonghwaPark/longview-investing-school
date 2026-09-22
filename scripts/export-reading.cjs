@@ -1,0 +1,1 @@
+const fs=require('fs'),vm=require('vm'); const ctx={};vm.createContext(ctx);for(const f of ['easy-reading.js','reading.js'])vm.runInContext(fs.readFileSync('dist/'+f,'utf8'),ctx);fs.writeFileSync('tmp/pdfs/content.json',vm.runInContext('JSON.stringify({shelf:readingShelf,weeks:readingWeeks,easy:easyReading})',ctx));
