@@ -11,7 +11,9 @@
 - 진도·노트·일지는 브라우저에만 저장됩니다. 대시보드에서 백업 파일로 내려받으세요.
 
 ```bash
-# 로컬 미리보기
+# 다른 PC에서 받기 (Git, Python 3 필요 · 공개 저장소라 로그인 불필요)
+git clone https://github.com/SeonghwaPark/longview-investing-school.git
+# 로컬 미리보기: Windows는 시작.bat 더블클릭, 그 외는 bash start.sh (아래와 같음)
 python -m http.server 5173 --bind 127.0.0.1 --directory dist
 # 자료 갱신
 python scripts/fetch_history.py
