@@ -47,12 +47,9 @@ jobs:
       - name: Sanity check (syntax + data)
         run: |
           for f in dist/*.js; do node --check "$f"; done
-          node -e "
-            const fs=require('fs');const vm=require('vm');const ctx={};vm.createContext(ctx);
-            vm.runInContext(fs.readFileSync('dist/history.js','utf8'),ctx);
-            const h=ctx.MARKET_HISTORY;const n=Object.keys(h.symbols).length;
-            for(const [s,d] of Object.entries(h.symbols)){if(d.rows.length<100)throw Error(s+' too few rows');}
-            console.log('history ok', n, 'symbols, asOf', h.asOf);"
+          node scripts/verify-training.cjs
+          node scripts/verify-cases.cjs
+          node scripts/verify-reading.cjs
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
