@@ -1,0 +1,50 @@
+[
+  {
+    "symbol": "VOO",
+    "name": "S&P 500 ETF"
+  },
+  {
+    "symbol": "QQQM",
+    "name": "나스닥 100 ETF"
+  },
+  {
+    "symbol": "IWM",
+    "name": "러셀 2000 ETF"
+  },
+  {
+    "symbol": "RSP",
+    "name": "S&P 500 동일가중 ETF"
+  },
+  {
+    "symbol": "NVDA",
+    "name": "엔비디아"
+  },
+  {
+    "symbol": "AAPL",
+    "name": "애플"
+  },
+  {
+    "symbol": "MSFT",
+    "name": "마이크로소프트"
+  },
+  {
+    "symbol": "AMZN",
+    "name": "아마존"
+  },
+  {
+    "symbol": "GOOGL",
+    "name": "알파벳"
+  },
+  {
+    "symbol": "META",
+    "name": "메타"
+  },
+  {
+    "symbol": "TSLA",
+    "name": "테슬라"
+  },
+  {
+    "symbol": "IONQ",
+    "name": "아이온큐"
+  }
+]

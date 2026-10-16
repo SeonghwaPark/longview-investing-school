@@ -1,6 +1,6 @@
 .sites-runtime/
 *.tar.gz
 *.tar
-
+_snapshots/
 tmp/
 output/

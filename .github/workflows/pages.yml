@@ -1,0 +1,70 @@
+# GitHub Pages 배포 + 매주 가격 자료 갱신
+# - main에 push하면 dist/를 그대로 배포합니다.
+# - 매주 토요일 00:30 UTC(한국 토요일 09:30)에는 Yahoo Finance에서 OHLCV를 다시 받아 dist/history.js를 커밋한 뒤 배포합니다.
+# - Actions 탭에서 "Run workflow"로 언제든 수동 갱신할 수 있습니다.
+name: pages
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "30 0 * * 6"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Refresh price history (schedule / manual only)
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: |
+          set -e
+          python3 scripts/fetch_history.py || echo "fetch failed; keeping previous history.js"
+          node scripts/verify-training.cjs
+          if ! git diff --quiet -- dist/history.js; then
+            git config user.name "longview-bot"
+            git config user.email "longview-bot@users.noreply.github.com"
+            git add dist/history.js
+            git commit -m "data: 가격 자료 갱신 $(python3 -c "import json,re;t=open('dist/history.js',encoding='utf-8').read();print(re.search(r'\"asOf\":\"([0-9-]+)\"',t).group(1))")"
+            git push
+          else
+            echo "history.js unchanged"
+          fi
+
+      - name: Sanity check (syntax + data)
+        run: |
+          for f in dist/*.js; do node --check "$f"; done
+          node -e "
+            const fs=require('fs');const vm=require('vm');const ctx={};vm.createContext(ctx);
+            vm.runInContext(fs.readFileSync('dist/history.js','utf8'),ctx);
+            const h=ctx.MARKET_HISTORY;const n=Object.keys(h.symbols).length;
+            for(const [s,d] of Object.entries(h.symbols)){if(d.rows.length<100)throw Error(s+' too few rows');}
+            console.log('history ok', n, 'symbols, asOf', h.asOf);"
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
