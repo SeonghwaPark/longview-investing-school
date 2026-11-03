@@ -32,7 +32,14 @@ jobs:
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: |
           set -e
-          python3 scripts/fetch_history.py || echo "fetch failed; keeping previous history.js"
+          if ! python3 scripts/fetch_history.py; then echo "::error::가격 자료 수집이 전부 실패했습니다 (Yahoo 응답 없음). 이전 자료를 유지하고 배포는 중단합니다."; exit 1; fi
+          python3 - <<'PY'
+          import json,re,datetime,sys
+          t=open("dist/history.js",encoding="utf-8").read();as_of=re.search(r'"asOf":"([0-9-]+)"',t).group(1)
+          age=(datetime.date.today()-datetime.date.fromisoformat(as_of)).days
+          print("asOf",as_of,"age",age,"days")
+          if age>10: print(f"::error::가격 자료가 {age}일 전({as_of}) 것입니다. 수집이 계속 실패하고 있습니다."); sys.exit(1)
+          PY
           node scripts/verify-training.cjs
           if ! git diff --quiet -- dist/history.js; then
             git config user.name "longview-bot"

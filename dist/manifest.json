@@ -1,0 +1,16 @@
+{
+  "name": "LONGVIEW 장기투자 스쿨",
+  "short_name": "LONGVIEW",
+  "description": "미국주식 장기투자 학습·판단 도구. 수업, 실제 차트, 판단 일지, 훈련실.",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f6f2",
+  "theme_color": "#183d2d",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
